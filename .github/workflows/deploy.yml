@@ -1,0 +1,36 @@
+name: Deploy Titanic API to Google VM
+
+on:
+  workflow_run:
+    workflows:
+      - "CD - Build and Push Docker Image"
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull latest Docker image
+        run: docker pull geniusatstuff/titanic-survival-api:latest
+
+      - name: Stop existing container
+        run: docker stop titanic-survival-api || true
+
+      - name: Remove existing container
+        run: docker rm titanic-survival-api || true
+
+      - name: Run latest container
+        run: |
+          docker run -d \
+            --name titanic-survival-api \
+            -p 5000:5000 \
+            geniusatstuff/titanic-survival-api:latest
+
+      - name: Check running containers
+        run: docker ps
+
+      - name: Test deployed API
+        run: curl http://127.0.0.1:5000/
