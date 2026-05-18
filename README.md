@@ -363,6 +363,8 @@ feature/deployment
 
 Changes are developed on feature branches and merged into `main` through pull requests. When changes are pushed or merged into `main`, GitHub Actions automatically runs the CI/CD workflows.
 
+This feature branch was used to demonstrate the branching strategy before merging changes back into main.
+
 ---
 
 ## Deployment Architecture
