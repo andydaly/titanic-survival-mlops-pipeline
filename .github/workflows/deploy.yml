@@ -32,5 +32,15 @@ jobs:
       - name: Check running containers
         run: docker ps
 
+      - name: Wait for API to start
+        run: sleep 10
+
+      - name: Show container logs
+        run: docker logs titanic-survival-api || true
+
       - name: Test deployed API
-        run: curl http://127.0.0.1:5000/
+        run: |
+          curl --retry 5 \
+               --retry-delay 3 \
+               --retry-connrefused \
+               http://127.0.0.1:5000/
